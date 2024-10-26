@@ -1,5 +1,8 @@
 import { useState } from "react";
-import { Box } from "@mui/material";
+import { Box, IconButton, Typography } from "@mui/material";
+import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
+import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
+import Day from "./components/Day";
 
 const Calendar = () => {
   const [currentDate, setCurrentDate] = useState(new Date());
@@ -19,33 +22,12 @@ const Calendar = () => {
 
     // Add blank days for the beginning of the month
     for (let i = 0; i < firstDay; i++) {
-      days.push(
-        <Box
-          color="transparent"
-          width={40}
-          height={40}
-          display="flex"
-          alignItems="center"
-          justifyContent="center"
-          key={`empty-${i}`}
-        ></Box>
-      );
+      days.push(<Day color="transparent" key={`empty-${i}`}></Day>);
     }
 
     // Add actual days
     for (let day = 1; day <= daysInMonth; day++) {
-      days.push(
-        <Box
-          key={day}
-          width={40}
-          height={40}
-          display="flex"
-          alignItems="center"
-          justifyContent="center"
-        >
-          {day}
-        </Box>
-      );
+      days.push(<Day key={day}>{day}</Day>);
     }
 
     return days;
@@ -71,16 +53,26 @@ const Calendar = () => {
       border="1px solid #ccc"
       borderRadius={1}
     >
-      <header>
-        <h2>
+      <Box
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        gap={4}
+        mb={1}
+      >
+        <IconButton onClick={handlePrevMonth} size="small">
+          <ArrowBackIosNewIcon fontSize="small" />
+        </IconButton>
+        <Typography fontWeight="bold">
           {currentDate.toLocaleString("default", {
             month: "long",
             year: "numeric",
           })}
-        </h2>
-        <button onClick={handlePrevMonth}>Prev</button>
-        <button onClick={handleNextMonth}>Next</button>
-      </header>
+        </Typography>
+        <IconButton onClick={handleNextMonth} size="small">
+          <ArrowForwardIosIcon fontSize="small" />
+        </IconButton>
+      </Box>
       <Box display="flex" justifyContent="space-between" fontWeight="bold">
         <div>Sun</div>
         <div>Mon</div>
