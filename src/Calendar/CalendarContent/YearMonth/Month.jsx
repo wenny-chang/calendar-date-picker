@@ -2,20 +2,21 @@ import { Box } from "@mui/material";
 import PropTypes from "prop-types";
 import { forwardRef, useCallback } from "react";
 import useCalendar from "../../useCalendar";
-import isSameDay from "date-fns/isSameDay";
 import isSameMonth from "date-fns/isSameMonth";
+import isSameYear from "date-fns/isSameYear";
+import { CalendarContentView } from "../../../utils/constant";
+
 const style = {
-  width: 36,
-  height: 36,
-  margin: "2px",
+  width: 60,
+  height: 60,
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
-  borderRadius: 50,
+  borderRadius: "50%",
   cursor: "pointer",
 };
 
-const isTodayStyle = {
+const isCurrentMonthStyle = {
   color: "#db3d44",
 };
 
@@ -24,54 +25,64 @@ const isSelectedStyle = {
   color: "white",
 };
 
-const isNotSameMonthStyle = {
+const isNotSameYearStyle = {
   color: "#eeeeee",
 };
 
-const Day = forwardRef(({ date, ...rest }, ref) => {
+const Month = forwardRef(({ date, month, ...rest }, ref) => {
   const calendarContext = useCalendar();
   const {
     setActiveDate,
     formatDate,
-    date: selectedDate,
     activeDate,
     onChange,
-    setSelectedYear,
+    setCurrentContentView,
+    selectedMonth,
     setSelectedMonth,
   } = { ...calendarContext };
 
   const handleClick = useCallback(() => {
     setActiveDate(date);
-    setSelectedYear(date.getFullYear());
-    setSelectedMonth(date.getMonth() + 1);
     onChange(date);
-  }, [date, setActiveDate, onChange, setSelectedYear, setSelectedMonth]);
+    setCurrentContentView(CalendarContentView.DAY);
+    setSelectedMonth(month);
+  }, [
+    setActiveDate,
+    date,
+    onChange,
+    setCurrentContentView,
+    setSelectedMonth,
+    month,
+  ]);
 
-  const isToday = isSameDay(date, new Date());
-  const isSelected = isSameDay(date, selectedDate);
-  const isNotSameMonth = !isSameMonth(date, activeDate);
+  const isCurrentMonth = isSameMonth(date, new Date());
+  const isSelected =
+    month === selectedMonth ||
+    (activeDate && month === activeDate.getMonth() + 1);
+  const isNotSameYear = !isSameYear(date, activeDate);
 
   return (
     <Box
-      display="flex"
       ref={ref}
       sx={{
         ...style,
-        ...(isToday && isTodayStyle),
+        ...(isCurrentMonth && isCurrentMonthStyle),
         ...(isSelected && isSelectedStyle),
-        ...(isNotSameMonth && isNotSameMonthStyle),
+        ...(isNotSameYear && isNotSameYearStyle),
         "&:hover": { backgroundColor: "#db3d44", color: "white" },
       }}
       onClick={handleClick}
       {...rest}
     >
-      {formatDate(date, "d")}
+      {formatDate(date, "MMM")}
     </Box>
   );
 });
 
-Day.displayName = "Day";
-Day.propTypes = {
+Month.displayName = "Month";
+Month.propTypes = {
   date: PropTypes.instanceOf(Date),
+  month: PropTypes.number,
 };
-export default Day;
+
+export default Month;

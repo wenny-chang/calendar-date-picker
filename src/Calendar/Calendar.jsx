@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import { useState, useMemo, useCallback, forwardRef } from "react";
-import { Box } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import { CalendarProvider } from "./context";
 import format from "date-fns/format";
 import isDate from "date-fns/isDate";
@@ -30,6 +30,8 @@ const Calendar = forwardRef((props, ref) => {
   const initialActiveDate = new Date();
   const [activeDate, setActiveDate] = useState(initialActiveDate);
   const [date, setDate] = useState(initialDate);
+  const [selectedYear, setSelectedYear] = useState(null);
+  const [selectedMonth, setSelectedMonth] = useState(null);
   const [currentContentView, setCurrentContentView] = useState(
     CalendarContentView.DAY
   );
@@ -63,15 +65,37 @@ const Calendar = forwardRef((props, ref) => {
       setActiveDate,
       formatDate,
       date,
+      setDate,
       currentContentView,
       setCurrentContentView,
       firstDayOfWeek,
       onChange,
+      selectedYear,
+      setSelectedYear,
+      selectedMonth,
+      setSelectedMonth,
     }),
-    [activeDate, formatDate, date, currentContentView, firstDayOfWeek, onChange]
+    [
+      activeDate,
+      formatDate,
+      date,
+      currentContentView,
+      firstDayOfWeek,
+      onChange,
+      selectedYear,
+      setSelectedYear,
+      selectedMonth,
+      setSelectedMonth,
+    ]
   );
   return (
     <CalendarProvider value={context}>
+      <Typography variant="h6">
+        Selected Date: {formatDate(date, "yyyy-MM-dd")}
+      </Typography>
+      <Typography variant="h6">
+        Selected Date: {selectedYear}-{selectedMonth}-{date?.getDate()}
+      </Typography>
       <Box
         width={300}
         p={1.5}

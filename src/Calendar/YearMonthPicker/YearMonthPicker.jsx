@@ -14,6 +14,8 @@ const YearMonthPicker = () => {
     activeDate,
     currentContentView,
     setCurrentContentView,
+    // setSelectedMonth,
+    // setSelectedYear,
   } = {
     ...calendarContext,
   };
@@ -53,6 +55,16 @@ const YearMonthPicker = () => {
     if (currentContentView !== CalendarContentView.YEAR) {
       setCurrentContentView(NextCalendarContentView[currentContentView]);
     }
+    // switch (currentContentView) {
+    //   case CalendarContentView.DAY:
+    //     setCurrentContentView(CalendarContentView.MONTH);
+    //     setSelectedMonth(null);
+    //     break;
+    //   case CalendarContentView.MONTH:
+    //     setCurrentContentView(CalendarContentView.YEAR);
+    //     setSelectedYear(null);
+    //     break;
+    // }
   };
 
   return (
