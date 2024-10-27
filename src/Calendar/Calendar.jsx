@@ -7,6 +7,8 @@ import isDate from "date-fns/isDate";
 import isValid from "date-fns/isValid";
 import YearMonthPicker from "./YearMonthPicker";
 import { CalendarContentView } from "../utils/constant";
+import CalendarContent from "./CalendarContent";
+
 const mapValueToDate = (value) => {
   if (value === undefined || value === null) {
     return null;
@@ -16,14 +18,18 @@ const mapValueToDate = (value) => {
 };
 
 const Calendar = forwardRef((props, ref) => {
-  const { date: dateProp, formatDate: formatDateProp } = props;
+  const {
+    date: dateProp, // selected date
+    formatDate: formatDateProp,
+    firstDayOfWeek = 0, // 0: Sunday, 1: Monday, ... 6: Saturday
+  } = props;
   const initialDate = useMemo(
-    () => mapValueToDate(dateProp) ?? new Date(),
+    () => mapValueToDate(dateProp) ?? null,
     [dateProp]
   );
   const initialActiveDate = new Date();
   const [activeDate, setActiveDate] = useState(initialActiveDate);
-  // const [date, setDate] = useState(initialDate);
+  const [date, setDate] = useState(initialDate);
   const [currentContentView, setCurrentContentView] = useState(
     CalendarContentView.DAY
   );
@@ -41,16 +47,28 @@ const Calendar = forwardRef((props, ref) => {
     [formatDateProp]
   );
 
+  const onChange = useCallback(
+    (nextDate) => {
+      const isControlled = dateProp !== undefined;
+      if (!isControlled) {
+        setDate(nextDate);
+      }
+    },
+    [dateProp]
+  );
+
   const context = useMemo(
     () => ({
       activeDate,
       setActiveDate,
       formatDate,
-      date: initialDate,
+      date,
       currentContentView,
       setCurrentContentView,
+      firstDayOfWeek,
+      onChange,
     }),
-    [activeDate, currentContentView, formatDate, initialDate]
+    [activeDate, formatDate, date, currentContentView, firstDayOfWeek, onChange]
   );
   return (
     <CalendarProvider value={context}>
@@ -62,6 +80,7 @@ const Calendar = forwardRef((props, ref) => {
         ref={ref}
       >
         <YearMonthPicker />
+        <CalendarContent />
       </Box>
     </CalendarProvider>
   );
@@ -73,6 +92,7 @@ Calendar.propTypes = {
   date: PropTypes.instanceOf(Date),
   defaultDate: PropTypes.instanceOf(Date),
   formatDate: PropTypes.func,
+  firstDayOfWeek: PropTypes.number,
 };
 
 export default Calendar;
