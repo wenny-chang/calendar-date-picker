@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import { useState, useMemo, useCallback, forwardRef } from "react";
-import { Box, Typography } from "@mui/material";
+import { Box } from "@mui/material";
 import { CalendarProvider } from "./context";
 import format from "date-fns/format";
 import isDate from "date-fns/isDate";
@@ -22,6 +22,7 @@ const Calendar = forwardRef((props, ref) => {
     date: dateProp, // selected date
     formatDate: formatDateProp,
     firstDayOfWeek = 0, // 0: Sunday, 1: Monday, ... 6: Saturday
+    onDateSelect: onDateSelectProp,
   } = props;
   const initialDate = useMemo(
     () => mapValueToDate(dateProp) ?? null,
@@ -54,8 +55,10 @@ const Calendar = forwardRef((props, ref) => {
       if (!isControlled) {
         setDate(date);
       }
+      currentContentView === CalendarContentView.DAY &&
+        onDateSelectProp?.(date);
     },
-    [dateProp]
+    [currentContentView, dateProp, onDateSelectProp]
   );
 
   const context = useMemo(
@@ -81,9 +84,6 @@ const Calendar = forwardRef((props, ref) => {
   );
   return (
     <CalendarProvider value={context}>
-      <Typography variant="h6">
-        Selected Date: {formatDate(date, "yyyy-MM-dd")}
-      </Typography>
       <Box
         width={300}
         p={1.5}
@@ -105,6 +105,7 @@ Calendar.propTypes = {
   defaultDate: PropTypes.instanceOf(Date),
   formatDate: PropTypes.func,
   firstDayOfWeek: PropTypes.number,
+  onDateSelect: PropTypes.func,
 };
 
 export default Calendar;
