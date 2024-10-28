@@ -1,3 +1,4 @@
+import { forwardRef } from "react";
 import { Box, IconButton, Button } from "@mui/material";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
@@ -7,15 +8,14 @@ import {
   CalendarContentView,
 } from "../../utils/constant";
 import { getDecadeRange } from "../../utils/function";
-const YearMonthPicker = () => {
+
+const YearMonthPicker = forwardRef((_props, ref) => {
   const calendarContext = useCalendar();
   const {
     setActiveDate,
     activeDate,
     currentContentView,
     setCurrentContentView,
-    // setSelectedMonth,
-    // setSelectedYear,
   } = {
     ...calendarContext,
   };
@@ -55,20 +55,11 @@ const YearMonthPicker = () => {
     if (currentContentView !== CalendarContentView.YEAR) {
       setCurrentContentView(NextCalendarContentView[currentContentView]);
     }
-    // switch (currentContentView) {
-    //   case CalendarContentView.DAY:
-    //     setCurrentContentView(CalendarContentView.MONTH);
-    //     setSelectedMonth(null);
-    //     break;
-    //   case CalendarContentView.MONTH:
-    //     setCurrentContentView(CalendarContentView.YEAR);
-    //     setSelectedYear(null);
-    //     break;
-    // }
   };
 
   return (
     <Box
+      ref={ref}
       display="flex"
       justifyContent="center"
       alignItems="center"
@@ -99,6 +90,8 @@ const YearMonthPicker = () => {
       </IconButton>
     </Box>
   );
-};
+});
+
+YearMonthPicker.displayName = "YearMonthPicker";
 
 export default YearMonthPicker;

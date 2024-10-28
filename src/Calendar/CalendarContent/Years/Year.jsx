@@ -33,31 +33,22 @@ const Year = forwardRef(({ year, ...rest }, ref) => {
   const calendarContext = useCalendar();
   const {
     activeDate,
-    onChange,
     setCurrentContentView,
-    setSelectedYear,
-    selectedYear,
-    setSelectedMonth,
-  } = { ...calendarContext };
+    onDateSelect,
+    date: selectedDate,
+    setActiveDate,
+  } = {
+    ...calendarContext,
+  };
 
   const handleClick = useCallback(() => {
-    const newDate = new Date(year, 0, 1);
-    setSelectedYear(year);
-    setSelectedMonth(null);
-    onChange(newDate);
+    onDateSelect({ day: 1, month: 0, year });
     setCurrentContentView(CalendarContentView.MONTH);
-  }, [
-    year,
-    setSelectedYear,
-    onChange,
-    setCurrentContentView,
-    setSelectedMonth,
-  ]);
+    setActiveDate(new Date(year, 0, 1));
+  }, [year, setCurrentContentView, onDateSelect, setActiveDate]);
 
   const isCurrentYear = isSameYear(new Date(year, 0, 1), new Date());
-  const isSelected = activeDate
-    ? year === activeDate.getFullYear()
-    : year === selectedYear;
+  const isSelected = isSameYear(new Date(year, 0, 1), selectedDate);
   const decadeRange = getDecadeRange(activeDate);
   const isNotInDecade = year < decadeRange[0] || year > decadeRange[1];
   return (

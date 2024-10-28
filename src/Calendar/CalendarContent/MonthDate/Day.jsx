@@ -35,17 +35,16 @@ const Day = forwardRef(({ date, ...rest }, ref) => {
     formatDate,
     date: selectedDate,
     activeDate,
-    onChange,
-    setSelectedYear,
-    setSelectedMonth,
+    onDateSelect,
   } = { ...calendarContext };
 
   const handleClick = useCallback(() => {
+    const day = date.getDate();
+    const month = date.getMonth();
+    const year = date.getFullYear();
+    onDateSelect({ day, month, year });
     setActiveDate(date);
-    setSelectedYear(date.getFullYear());
-    setSelectedMonth(date.getMonth() + 1);
-    onChange(date);
-  }, [date, setActiveDate, onChange, setSelectedYear, setSelectedMonth]);
+  }, [date, onDateSelect, setActiveDate]);
 
   const isToday = isSameDay(date, new Date());
   const isSelected = isSameDay(date, selectedDate);

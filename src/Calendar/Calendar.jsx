@@ -30,8 +30,6 @@ const Calendar = forwardRef((props, ref) => {
   const initialActiveDate = new Date();
   const [activeDate, setActiveDate] = useState(initialActiveDate);
   const [date, setDate] = useState(initialDate);
-  const [selectedYear, setSelectedYear] = useState(null);
-  const [selectedMonth, setSelectedMonth] = useState(null);
   const [currentContentView, setCurrentContentView] = useState(
     CalendarContentView.DAY
   );
@@ -49,11 +47,12 @@ const Calendar = forwardRef((props, ref) => {
     [formatDateProp]
   );
 
-  const onChange = useCallback(
+  const onDateSelect = useCallback(
     (nextDate) => {
+      const date = new Date(nextDate.year, nextDate.month, nextDate.day);
       const isControlled = dateProp !== undefined;
       if (!isControlled) {
-        setDate(nextDate);
+        setDate(date);
       }
     },
     [dateProp]
@@ -69,11 +68,7 @@ const Calendar = forwardRef((props, ref) => {
       currentContentView,
       setCurrentContentView,
       firstDayOfWeek,
-      onChange,
-      selectedYear,
-      setSelectedYear,
-      selectedMonth,
-      setSelectedMonth,
+      onDateSelect,
     }),
     [
       activeDate,
@@ -81,20 +76,13 @@ const Calendar = forwardRef((props, ref) => {
       date,
       currentContentView,
       firstDayOfWeek,
-      onChange,
-      selectedYear,
-      setSelectedYear,
-      selectedMonth,
-      setSelectedMonth,
+      onDateSelect,
     ]
   );
   return (
     <CalendarProvider value={context}>
       <Typography variant="h6">
         Selected Date: {formatDate(date, "yyyy-MM-dd")}
-      </Typography>
-      <Typography variant="h6">
-        Selected Date: {selectedYear}-{selectedMonth}-{date?.getDate()}
       </Typography>
       <Box
         width={300}
