@@ -1,48 +1,36 @@
 import { Box } from "@mui/material";
 import PropTypes from "prop-types";
-import { forwardRef, useCallback } from "react";
+import { forwardRef, useCallback, useMemo } from "react";
 import useCalendar from "../../useCalendar";
 import isSameDay from "date-fns/isSameDay";
 import isSameMonth from "date-fns/isSameMonth";
-const style = {
+
+const baseStyle = {
   width: 36,
   height: 36,
   margin: "2px",
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
-  borderRadius: 50,
+  borderRadius: "50%",
   cursor: "pointer",
 };
 
-const isTodayStyle = {
-  color: "#db3d44",
-};
-
-const isSelectedStyle = {
-  backgroundColor: "#db3d44",
-  color: "white",
-};
-
-const isNotSameMonthStyle = {
-  color: "#eeeeee",
-};
-
 const Day = forwardRef(({ date, ...rest }, ref) => {
-  const calendarContext = useCalendar();
   const {
     setActiveDate,
     formatDate,
     date: selectedDate,
     activeDate,
     onDateSelect,
-  } = { ...calendarContext };
+  } = useCalendar();
 
   const handleClick = useCallback(() => {
-    const day = date.getDate();
-    const month = date.getMonth();
-    const year = date.getFullYear();
-    onDateSelect({ day, month, year });
+    onDateSelect({
+      day: date.getDate(),
+      month: date.getMonth(),
+      year: date.getFullYear(),
+    });
     setActiveDate(date);
   }, [date, onDateSelect, setActiveDate]);
 
@@ -50,27 +38,28 @@ const Day = forwardRef(({ date, ...rest }, ref) => {
   const isSelected = isSameDay(date, selectedDate);
   const isNotSameMonth = !isSameMonth(date, activeDate);
 
+  const dayStyle = useMemo(
+    () => ({
+      ...baseStyle,
+      ...(isToday && { color: "#db3d44" }),
+      ...(isSelected && { backgroundColor: "#db3d44", color: "white" }),
+      ...(isNotSameMonth && { color: "#eeeeee" }),
+      "&:hover": { backgroundColor: "#db3d44", color: "white" },
+    }),
+    [isToday, isSelected, isNotSameMonth]
+  );
+
   return (
-    <Box
-      display="flex"
-      ref={ref}
-      sx={{
-        ...style,
-        ...(isToday && isTodayStyle),
-        ...(isSelected && isSelectedStyle),
-        ...(isNotSameMonth && isNotSameMonthStyle),
-        "&:hover": { backgroundColor: "#db3d44", color: "white" },
-      }}
-      onClick={handleClick}
-      {...rest}
-    >
+    <Box ref={ref} sx={dayStyle} onClick={handleClick} {...rest}>
       {formatDate(date, "d")}
     </Box>
   );
 });
 
 Day.displayName = "Day";
+
 Day.propTypes = {
-  date: PropTypes.instanceOf(Date),
+  date: PropTypes.instanceOf(Date).isRequired,
 };
+
 export default Day;

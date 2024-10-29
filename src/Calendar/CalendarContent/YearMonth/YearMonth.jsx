@@ -3,10 +3,7 @@ import Grid from "@mui/material/Grid2";
 import Month from "./Month";
 
 const YearMonth = () => {
-  const calendarContext = useCalendar();
-  const { activeDate } = {
-    ...calendarContext,
-  };
+  const { activeDate } = useCalendar();
 
   return (
     <Grid container rowSpacing={1}>

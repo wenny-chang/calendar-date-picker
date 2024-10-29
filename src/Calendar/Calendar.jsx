@@ -19,16 +19,17 @@ const mapValueToDate = (value) => {
 
 const Calendar = forwardRef((props, ref) => {
   const {
-    date: dateProp, // selected date
-    formatDate: formatDateProp,
-    firstDayOfWeek = 0, // 0: Sunday, 1: Monday, ... 6: Saturday
-    onDateSelect: onDateSelectProp,
+    date: dateProp, // Controlled date prop
+    formatDate: formatDateProp, // Custom date formatting function
+    firstDayOfWeek = 0, // Default to Sunday
+    onDateSelect: onDateSelectProp, // Callback for date selection
   } = props;
+
   const initialDate = useMemo(
     () => mapValueToDate(dateProp) ?? null,
     [dateProp]
   );
-  const initialActiveDate = new Date();
+  const initialActiveDate = useMemo(() => new Date(), []);
   const [activeDate, setActiveDate] = useState(initialActiveDate);
   const [date, setDate] = useState(initialDate);
   const [currentContentView, setCurrentContentView] = useState(
@@ -37,26 +38,28 @@ const Calendar = forwardRef((props, ref) => {
 
   const formatDate = useCallback(
     (_date, _format, _options) => {
-      if (!_date) {
-        return null;
-      }
-      if (typeof formatDateProp === "function") {
-        return formatDateProp(_date, _format, _options);
-      }
-      return format(_date, _format, _options);
+      if (!_date) return null;
+      return typeof formatDateProp === "function"
+        ? formatDateProp(_date, _format, _options)
+        : format(_date, _format, _options);
     },
     [formatDateProp]
   );
 
   const onDateSelect = useCallback(
     (nextDate) => {
-      const date = new Date(nextDate.year, nextDate.month, nextDate.day);
+      const selectedDate = new Date(
+        nextDate.year,
+        nextDate.month,
+        nextDate.day
+      );
       const isControlled = dateProp !== undefined;
       if (!isControlled) {
-        setDate(date);
+        setDate(selectedDate);
       }
-      currentContentView === CalendarContentView.DAY &&
-        onDateSelectProp?.(date);
+      if (currentContentView === CalendarContentView.DAY) {
+        onDateSelectProp?.(selectedDate);
+      }
     },
     [currentContentView, dateProp, onDateSelectProp]
   );
@@ -82,6 +85,7 @@ const Calendar = forwardRef((props, ref) => {
       onDateSelect,
     ]
   );
+
   return (
     <CalendarProvider value={context}>
       <Box
@@ -102,7 +106,6 @@ Calendar.displayName = "Calendar";
 
 Calendar.propTypes = {
   date: PropTypes.instanceOf(Date),
-  defaultDate: PropTypes.instanceOf(Date),
   formatDate: PropTypes.func,
   firstDayOfWeek: PropTypes.number,
   onDateSelect: PropTypes.func,

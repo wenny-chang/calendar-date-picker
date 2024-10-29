@@ -10,15 +10,13 @@ import {
 import { getDecadeRange } from "../../utils/function";
 
 const YearMonthPicker = forwardRef((_props, ref) => {
-  const calendarContext = useCalendar();
   const {
     setActiveDate,
     activeDate,
     currentContentView,
     setCurrentContentView,
-  } = {
-    ...calendarContext,
-  };
+  } = useCalendar();
+
   const handlePrev = () => {
     switch (currentContentView) {
       case CalendarContentView.DAY:
@@ -31,6 +29,8 @@ const YearMonthPicker = forwardRef((_props, ref) => {
         break;
       case CalendarContentView.YEAR:
         setActiveDate(new Date(activeDate.getFullYear() - 10, 0));
+        break;
+      default:
         break;
     }
   };
@@ -47,6 +47,8 @@ const YearMonthPicker = forwardRef((_props, ref) => {
         break;
       case CalendarContentView.YEAR:
         setActiveDate(new Date(activeDate.getFullYear() + 10, 0));
+        break;
+      default:
         break;
     }
   };

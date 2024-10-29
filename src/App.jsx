@@ -11,6 +11,7 @@ function App() {
       secondary: grey,
     },
   });
+
   return (
     <ThemeProvider theme={theme}>
       <Box display="flex" gap={12}>

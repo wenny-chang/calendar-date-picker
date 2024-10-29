@@ -15,11 +15,6 @@ export const NextCalendarContentView = {
   MONTH: CalendarContentView.YEAR,
 };
 
-export const NextCalendarPickerView = {
-  MONTH_YEAR: CalendarPickerView.YEAR,
-  YEAR: CalendarPickerView.MONTH_YEAR,
-};
-
 export const CalendarContentMapping = {
   [CalendarContentView.DAY]: CalendarPickerView.MONTH_YEAR_HEADER,
   [CalendarContentView.MONTH]: CalendarPickerView.YEAR_HEADER,

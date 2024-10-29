@@ -1,9 +1,10 @@
-import { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useCallback } from "react";
 import { Box, TextField, InputAdornment } from "@mui/material";
+import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import Calendar from "../Calendar/Calendar";
 import format from "date-fns/format";
 import isValid from "date-fns/isValid";
-import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
+
 const DatePicker = () => {
   const [date, setDate] = useState(null);
   const [showCalendar, setShowCalendar] = useState(false);
@@ -12,7 +13,6 @@ const DatePicker = () => {
   const inputRef = useRef(null);
 
   useEffect(() => {
-    // Handle clicking outside to close calendar
     const handleClickOutside = (event) => {
       if (
         calendarRef.current &&
@@ -29,26 +29,25 @@ const DatePicker = () => {
     };
   }, []);
 
-  const handleInputChange = (event) => {
+  const handleInputChange = useCallback((event) => {
     const value = event.target.value;
     setInputValue(value);
 
-    // Try to parse date from input
     const parsedDate = new Date(value);
     if (isValid(parsedDate)) {
       setDate(parsedDate);
     }
-  };
+  }, []);
 
-  const handleInputFocus = () => {
+  const handleInputFocus = useCallback(() => {
     setShowCalendar(true);
-  };
+  }, []);
 
-  const handleDateSelect = (selectedDate) => {
+  const handleDateSelect = useCallback((selectedDate) => {
     setDate(selectedDate);
     setInputValue(format(selectedDate, "yyyy-MM-dd"));
     setShowCalendar(false);
-  };
+  }, []);
 
   return (
     <Box sx={{ position: "relative", width: "fit-content" }}>
@@ -67,6 +66,7 @@ const DatePicker = () => {
             ),
           },
         }}
+        aria-describedby="Date input"
       />
 
       {showCalendar && (
@@ -88,4 +88,4 @@ const DatePicker = () => {
   );
 };
 
-export default DatePicker;
+export default React.memo(DatePicker);

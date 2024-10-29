@@ -4,10 +4,7 @@ import Grid from "@mui/material/Grid2";
 import useCalendar from "../../useCalendar";
 
 const Years = () => {
-  const calendarContext = useCalendar();
-  const { activeDate } = {
-    ...calendarContext,
-  };
+  const { activeDate } = useCalendar();
   const [startYear] = getDecadeRange(activeDate);
 
   const allYearsInDecade = Array.from(

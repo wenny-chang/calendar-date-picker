@@ -5,10 +5,8 @@ import YearMonth from "./YearMonth";
 import Years from "./Years";
 
 const CalendarContent = () => {
-  const calendarContext = useCalendar();
-  const { currentContentView } = {
-    ...calendarContext,
-  };
+  const { currentContentView } = useCalendar();
+
   return {
     [CalendarContentView.DAY]: <MonthDate />,
     [CalendarContentView.MONTH]: <YearMonth />,

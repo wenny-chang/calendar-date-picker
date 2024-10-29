@@ -30,16 +30,13 @@ const isNotInDecadeStyle = {
 };
 
 const Year = forwardRef(({ year, ...rest }, ref) => {
-  const calendarContext = useCalendar();
   const {
     activeDate,
     setCurrentContentView,
     onDateSelect,
     date: selectedDate,
     setActiveDate,
-  } = {
-    ...calendarContext,
-  };
+  } = useCalendar();
 
   const handleClick = useCallback(() => {
     onDateSelect({ day: 1, month: 0, year });
@@ -51,6 +48,7 @@ const Year = forwardRef(({ year, ...rest }, ref) => {
   const isSelected = isSameYear(new Date(year, 0, 1), selectedDate);
   const decadeRange = getDecadeRange(activeDate);
   const isNotInDecade = year < decadeRange[0] || year > decadeRange[1];
+
   return (
     <Box
       ref={ref}

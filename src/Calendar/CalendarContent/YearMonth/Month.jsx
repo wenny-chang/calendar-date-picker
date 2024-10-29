@@ -25,14 +25,13 @@ const isSelectedStyle = {
 };
 
 const Month = forwardRef(({ date, ...rest }, ref) => {
-  const calendarContext = useCalendar();
   const {
     setActiveDate,
     formatDate,
     date: selectedDate,
     setCurrentContentView,
     onDateSelect,
-  } = { ...calendarContext };
+  } = useCalendar();
 
   const handleClick = useCallback(() => {
     onDateSelect({ day: 1, month: date.getMonth(), year: date.getFullYear() });
@@ -62,8 +61,7 @@ const Month = forwardRef(({ date, ...rest }, ref) => {
 
 Month.displayName = "Month";
 Month.propTypes = {
-  date: PropTypes.instanceOf(Date),
-  month: PropTypes.number,
+  date: PropTypes.instanceOf(Date).isRequired,
 };
 
 export default Month;
