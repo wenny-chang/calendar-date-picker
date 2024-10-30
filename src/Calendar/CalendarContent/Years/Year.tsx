@@ -2,7 +2,7 @@ import { Box } from "@mui/material";
 import PropTypes from "prop-types";
 import { forwardRef, useCallback } from "react";
 import useCalendar from "../../useCalendar";
-import isSameYear from "date-fns/isSameYear";
+import { isSameYear } from "date-fns";
 import { CalendarContentView } from "../../../utils/constant";
 import { getDecadeRange } from "../../../utils/function";
 
@@ -29,7 +29,7 @@ const isNotInDecadeStyle = {
   color: "#eeeeee",
 };
 
-const Year = forwardRef(({ year, ...rest }, ref) => {
+const Year = forwardRef(({ year, ...rest }: { year: number }, ref) => {
   const {
     activeDate,
     setCurrentContentView,
@@ -45,7 +45,7 @@ const Year = forwardRef(({ year, ...rest }, ref) => {
   }, [year, setCurrentContentView, onDateSelect, setActiveDate]);
 
   const isCurrentYear = isSameYear(new Date(year, 0, 1), new Date());
-  const isSelected = isSameYear(new Date(year, 0, 1), selectedDate);
+  const isSelected = isSameYear(new Date(year, 0, 1), selectedDate ?? "");
   const decadeRange = getDecadeRange(activeDate);
   const isNotInDecade = year < decadeRange[0] || year > decadeRange[1];
 

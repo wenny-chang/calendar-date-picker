@@ -2,14 +2,13 @@ import PropTypes from "prop-types";
 import { useState, useMemo, useCallback, forwardRef } from "react";
 import { Box } from "@mui/material";
 import { CalendarProvider } from "./context";
-import format from "date-fns/format";
-import isDate from "date-fns/isDate";
-import isValid from "date-fns/isValid";
+import { format, isDate, isValid } from "date-fns";
 import YearMonthPicker from "./YearMonthPicker";
 import { CalendarContentView } from "../utils/constant";
 import CalendarContent from "./CalendarContent";
+import { CalendarContextType } from "./context";
 
-const mapValueToDate = (value) => {
+const mapValueToDate = (value: Date | string | number | undefined | null) => {
   if (value === undefined || value === null) {
     return null;
   }
@@ -17,7 +16,18 @@ const mapValueToDate = (value) => {
   return isDate(date) && isValid(date) ? date : null;
 };
 
-const Calendar = forwardRef((props, ref) => {
+type CalendarProps = {
+  date?: Date | string | number | undefined | null;
+  formatDate?: (
+    date: Date,
+    format: string,
+    options?: Intl.DateTimeFormatOptions
+  ) => string;
+  firstDayOfWeek?: number;
+  onDateSelect?: (date: Date) => void;
+};
+
+const Calendar = forwardRef((props: CalendarProps, ref) => {
   const {
     date: dateProp, // Controlled date prop
     formatDate: formatDateProp, // Custom date formatting function
@@ -37,22 +47,18 @@ const Calendar = forwardRef((props, ref) => {
   );
 
   const formatDate = useCallback(
-    (_date, _format, _options) => {
-      if (!_date) return null;
+    (_date: Date, _format: string) => {
+      if (!_date) return "";
       return typeof formatDateProp === "function"
-        ? formatDateProp(_date, _format, _options)
-        : format(_date, _format, _options);
+        ? formatDateProp(_date, _format)
+        : format(_date, _format);
     },
     [formatDateProp]
   );
 
   const onDateSelect = useCallback(
-    (nextDate) => {
-      const selectedDate = new Date(
-        nextDate.year,
-        nextDate.month,
-        nextDate.day
-      );
+    ({ year, month, day }: { year: number; month: number; day: number }) => {
+      const selectedDate = new Date(year, month, day);
       const isControlled = dateProp !== undefined;
       if (!isControlled) {
         setDate(selectedDate);
@@ -64,7 +70,7 @@ const Calendar = forwardRef((props, ref) => {
     [currentContentView, dateProp, onDateSelectProp]
   );
 
-  const context = useMemo(
+  const context: CalendarContextType = useMemo(
     () => ({
       activeDate,
       setActiveDate,

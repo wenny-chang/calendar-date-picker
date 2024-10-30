@@ -1,21 +1,21 @@
-export const CalendarContentView = {
-  DAY: "DAY",
-  MONTH: "MONTH",
-  YEAR: "YEAR",
-};
+export enum CalendarContentView {
+  DAY = "DAY",
+  MONTH = "MONTH",
+  YEAR = "YEAR",
+}
 
-export const CalendarPickerView = {
-  MONTH_YEAR_HEADER: "MONTH_YEAR_HEADER",
-  YEAR_HEADER: "YEAR_HEADER",
-  YEARS_HEADER: "YEARS_HEADER",
-};
+export enum CalendarPickerView {
+  MONTH_YEAR_HEADER = "MONTH_YEAR_HEADER",
+  YEAR_HEADER = "YEAR_HEADER",
+  YEARS_HEADER = "YEARS_HEADER",
+}
 
-export const NextCalendarContentView = {
+export const NextCalendarContentView: Record<string, string> = {
   DAY: CalendarContentView.MONTH,
   MONTH: CalendarContentView.YEAR,
 };
 
-export const CalendarContentMapping = {
+export const CalendarContentMapping: Record<string, string> = {
   [CalendarContentView.DAY]: CalendarPickerView.MONTH_YEAR_HEADER,
   [CalendarContentView.MONTH]: CalendarPickerView.YEAR_HEADER,
   [CalendarContentView.YEAR]: CalendarPickerView.YEARS_HEADER,

@@ -5,19 +5,20 @@ import Calendar from "../Calendar/Calendar";
 import format from "date-fns/format";
 import isValid from "date-fns/isValid";
 
-const DatePicker = () => {
-  const [date, setDate] = useState(null);
-  const [showCalendar, setShowCalendar] = useState(false);
-  const [inputValue, setInputValue] = useState("");
-  const calendarRef = useRef(null);
-  const inputRef = useRef(null);
+const DatePicker: React.FC = () => {
+  const [date, setDate] = useState<Date | null>(null);
+  const [showCalendar, setShowCalendar] = useState<boolean>(false);
+  const [inputValue, setInputValue] = useState<string>("");
+  const calendarRef = useRef<HTMLDivElement | null>(null);
+  const inputRef = useRef<HTMLInputElement | null>(null);
 
   useEffect(() => {
-    const handleClickOutside = (event) => {
+    const handleClickOutside = (event: MouseEvent) => {
       if (
         calendarRef.current &&
-        !calendarRef.current.contains(event.target) &&
-        !inputRef.current.contains(event.target)
+        !calendarRef.current.contains(event.target as Node) &&
+        inputRef.current &&
+        !inputRef.current.contains(event.target as Node)
       ) {
         setShowCalendar(false);
       }
@@ -29,21 +30,24 @@ const DatePicker = () => {
     };
   }, []);
 
-  const handleInputChange = useCallback((event) => {
-    const value = event.target.value;
-    setInputValue(value);
+  const handleInputChange = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      const value = event.target.value;
+      setInputValue(value);
 
-    const parsedDate = new Date(value);
-    if (isValid(parsedDate)) {
-      setDate(parsedDate);
-    }
-  }, []);
+      const parsedDate = new Date(value);
+      if (isValid(parsedDate)) {
+        setDate(parsedDate);
+      }
+    },
+    []
+  );
 
   const handleInputFocus = useCallback(() => {
     setShowCalendar(true);
   }, []);
 
-  const handleDateSelect = useCallback((selectedDate) => {
+  const handleDateSelect = useCallback((selectedDate: Date) => {
     setDate(selectedDate);
     setInputValue(format(selectedDate, "yyyy-MM-dd"));
     setShowCalendar(false);

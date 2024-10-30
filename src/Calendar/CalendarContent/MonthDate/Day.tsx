@@ -2,8 +2,7 @@ import { Box } from "@mui/material";
 import PropTypes from "prop-types";
 import { forwardRef, useCallback, useMemo } from "react";
 import useCalendar from "../../useCalendar";
-import isSameDay from "date-fns/isSameDay";
-import isSameMonth from "date-fns/isSameMonth";
+import { isSameDay, isSameMonth } from "date-fns";
 
 const baseStyle = {
   width: 36,
@@ -16,7 +15,7 @@ const baseStyle = {
   cursor: "pointer",
 };
 
-const Day = forwardRef(({ date, ...rest }, ref) => {
+const Day = forwardRef(({ date, ...rest }: { date: Date }, ref) => {
   const {
     setActiveDate,
     formatDate,
@@ -35,7 +34,7 @@ const Day = forwardRef(({ date, ...rest }, ref) => {
   }, [date, onDateSelect, setActiveDate]);
 
   const isToday = isSameDay(date, new Date());
-  const isSelected = isSameDay(date, selectedDate);
+  const isSelected = isSameDay(date, selectedDate ?? "");
   const isNotSameMonth = !isSameMonth(date, activeDate);
 
   const dayStyle = useMemo(

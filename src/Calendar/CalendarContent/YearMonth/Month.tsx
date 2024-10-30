@@ -2,7 +2,7 @@ import { Box } from "@mui/material";
 import PropTypes from "prop-types";
 import { forwardRef, useCallback } from "react";
 import useCalendar from "../../useCalendar";
-import isSameMonth from "date-fns/isSameMonth";
+import { isSameMonth } from "date-fns";
 import { CalendarContentView } from "../../../utils/constant";
 
 const style = {
@@ -24,7 +24,7 @@ const isSelectedStyle = {
   color: "white",
 };
 
-const Month = forwardRef(({ date, ...rest }, ref) => {
+const Month = forwardRef(({ date, ...rest }: { date: Date }, ref) => {
   const {
     setActiveDate,
     formatDate,
@@ -40,7 +40,7 @@ const Month = forwardRef(({ date, ...rest }, ref) => {
   }, [onDateSelect, date, setActiveDate, setCurrentContentView]);
 
   const isCurrentMonth = isSameMonth(date, new Date());
-  const isSelected = isSameMonth(date, selectedDate);
+  const isSelected = isSameMonth(date, selectedDate ?? "");
 
   return (
     <Box

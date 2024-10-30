@@ -55,7 +55,9 @@ const YearMonthPicker = forwardRef((_props, ref) => {
 
   const handleClickPicker = () => {
     if (currentContentView !== CalendarContentView.YEAR) {
-      setCurrentContentView(NextCalendarContentView[currentContentView]);
+      setCurrentContentView(
+        NextCalendarContentView[currentContentView] as CalendarContentView
+      );
     }
   };
 
@@ -74,9 +76,8 @@ const YearMonthPicker = forwardRef((_props, ref) => {
       <Button
         fullWidth
         variant="text"
-        color="grey.900"
         onClick={handleClickPicker}
-        sx={{ fontWeight: "bold" }}
+        sx={{ fontWeight: "bold", color: "grey.900" }}
       >
         {currentContentView === CalendarContentView.DAY
           ? activeDate.toLocaleString("default", {
