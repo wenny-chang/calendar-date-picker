@@ -2,8 +2,7 @@ import React, { useState, useRef, useEffect, useCallback } from "react";
 import { Box, TextField, InputAdornment } from "@mui/material";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import Calendar from "../Calendar/Calendar";
-import format from "date-fns/format";
-import isValid from "date-fns/isValid";
+import { format, isValid } from "date-fns";
 
 const DatePicker: React.FC = () => {
   const [date, setDate] = useState<Date | null>(null);
