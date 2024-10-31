@@ -36,12 +36,16 @@ yarn dev
   - Selected date, month, or year is marked with a red circle (`#db3d44`).
   - Today's date is shown in red (`#db3d44`).
 
-### API Properties (TBD)
+### Calendar API Properties
 
 | Name     | Type               | Default | Description                        |
 |----------|--------------------|---------|------------------------------------|
-| date     | object or string   | null    | The current date to display.       |
-| onSelect | function(date)     |         | Called when a date is selected.    |
+| date     | Date or string   | null    | The selected date.       |
+| defaultDate     | Date or string   | null    | The default selected date.       |
+| firstDayOfWeek | number     | 0    | The first day of the week.<br/>0 = Sunday<br/>1 = Monday<br/>2 = Tuesday<br/>3 = Wednesday<br/>4 = Thursday<br/>5 = Friday<br/>6 = Saturday       |
+| onDateSelect   | function(date) |         | A callback called when the value (the selected date)changes. <br/> **Signature:**<br/> `function(value) => void`<br/>`value`: The selected date.    |
+
+
 
 ## Task 2: DatePicker Component
 
@@ -51,6 +55,18 @@ yarn dev
 - **ISO Format**: The selected date is displayed in the input field using the ISO format (YYYY-MM-DD).
 - **Calendar Dropdown**: Clicking the input field opens the calendar dropdown.
 - **Auto-Close**: The calendar closes automatically when a date is selected, and the selected date is displayed in the input field.
+
+### DatePicker API Properties
+
+| Name     | Type               | Default | Description                        |
+|----------|--------------------|---------|------------------------------------|
+| defaultValue   | Date or string   | null    | The default selected date.       |
+| inputFormat     | string   | yyyy-MM-dd    | The input format.  <br/>`yyyy-MM-dd` = 2024-01-01<br/>`MM-dd-yyyy` = 01-01-2024<br/>`dd-MM-yyyy` = 01-01-2024       |
+| closeOnSelect     | boolean   | false    | Close the calendar after a date is selected.       |
+| firstDayOfWeek | number     | 0    | The first day of the week.<br/>0 = Sunday<br/>1 = Monday<br/>2 = Tuesday<br/>3 = Wednesday<br/>4 = Thursday<br/>5 = Friday<br/>6 = Saturday       |
+| onChange   | function(date) |         | A callback called when the input value changes. <br/> **Signature:**<br/> `function(value) => void`<br/>`value`: The input value.    |
+
+
 
 ## Usage
 
