@@ -70,7 +70,7 @@ const YearMonthPicker = forwardRef((_props, ref) => {
       gap={4}
       mb={1}
     >
-      <IconButton onClick={handlePrev} size="small">
+      <IconButton onClick={handlePrev} size="small" data-testid="prev-button">
         <ArrowBackIosNewIcon fontSize="small" />
       </IconButton>
       <Button
@@ -78,6 +78,7 @@ const YearMonthPicker = forwardRef((_props, ref) => {
         variant="text"
         onClick={handleClickPicker}
         sx={{ fontWeight: "bold", color: "grey.900" }}
+        data-testid="picker"
       >
         {currentContentView === CalendarContentView.DAY
           ? activeDate.toLocaleString("default", {
@@ -88,7 +89,7 @@ const YearMonthPicker = forwardRef((_props, ref) => {
           ? activeDate.getFullYear()
           : getDecadeRange(activeDate).join(" - ")}
       </Button>
-      <IconButton onClick={handleNext} size="small">
+      <IconButton onClick={handleNext} size="small" data-testid="next-button">
         <ArrowForwardIosIcon fontSize="small" />
       </IconButton>
     </Box>
