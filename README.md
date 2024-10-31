@@ -1,17 +1,17 @@
 # Calendar and DatePicker Components
 
-This project includes a `Calendar` component and a `DatePicker` component designed to provide a user-friendly interface for date selection. The components are built using React and Material-UI, ensuring a modern and responsive design.
+This project features a `Calendar` and a `DatePicker` component, both built with React and Material-UI for a modern, responsive design.
 
 ## Getting Started
 
-1. Install dependencies 
-```
-yarn
-```
-2. Run for demo.
-```
-yarn dev
-```
+1. **Install Dependencies**:
+   ```bash
+   yarn
+   ```
+2. **Run the Demo**:
+   ```bash
+   yarn dev
+   ```
 
 ## Browser Support
 
@@ -20,57 +20,52 @@ yarn dev
 - Firefox
 - Internet Explorer 11
 
-## Task 1: Calendar Component
+## Calendar Component
 
 ### Features
 
-- **6-Row Calendar Layout**: The calendar always renders with 6 rows, regardless of the number of days in the month.
-- **Gray Out-of-Month Days**: Days outside the current month are displayed in gray (`#eeeeee`).
+- **6-Row Layout**: Always displays 6 rows, regardless of the month's days.
+- **Gray Out-of-Month Days**: Days outside the current month appear in gray (`#eeeeee`).
 - **Navigation**: 
-  - Click `<` to navigate to previous days, months, or years.
-  - Click `>` to navigate to next days, months, or years.
+  - `<` for previous days, months, or years.
+  - `>` for next days, months, or years.
 - **View Switching**:
-  - Click the current month to switch to the month view. Selecting a month returns to the previous view.
-  - Click the current year to switch to the year view. Selecting a year returns to the previous view.
+  - Click the current month/year to switch views.
 - **Highlighting**:
-  - Selected date, month, or year is marked with a red circle (`#db3d44`).
-  - Today's date is shown in red (`#db3d44`).
+  - Selected date/month/year: red circle (`#db3d44`).
+  - Today's date: red (`#db3d44`).
 
-### Calendar API Properties
+### API Properties
 
-| Name     | Type               | Default | Description                        |
-|----------|--------------------|---------|------------------------------------|
-| date     | Date or string   | null    | The selected date.       |
-| defaultDate     | Date or string   | null    | The default selected date.       |
-| firstDayOfWeek | number     | 0    | The first day of the week.<br/>0 = Sunday<br/>1 = Monday<br/>2 = Tuesday<br/>3 = Wednesday<br/>4 = Thursday<br/>5 = Friday<br/>6 = Saturday       |
-| onDateSelect   | function(date) |         | A callback called when the value (the selected date)changes. <br/> **Signature:**<br/> `function(value) => void`<br/>`value`: The selected date.    |
+| Name            | Type             | Default | Description                                      |
+|-----------------|------------------|---------|--------------------------------------------------|
+| `date`          | Date or string   | null    | The selected date.                               |
+| `defaultDate`   | Date or string   | null    | The default selected date.                       |
+| `firstDayOfWeek`| number           | 0       | First day of the week (0 = Sunday, 1 = Monday, etc.). |
+| `onDateSelect`  | function(value)  |         | Callback when the selected date changes.         |
 
-
-
-## Task 2: DatePicker Component
+## DatePicker Component
 
 ### Features
 
-- **Date Input and Calendar View**: Users can type a date in the input field or select a date from the calendar.
-- **ISO Format**: The selected date is displayed in the input field using the ISO format (YYYY-MM-DD).
-- **Calendar Dropdown**: Clicking the input field opens the calendar dropdown.
-- **Auto-Close**: The calendar closes automatically when a date is selected, and the selected date is displayed in the input field.
+- **Date Input and Calendar View**: Type a date or select from the calendar.
+- **ISO Format**: Displays selected date in ISO format (YYYY-MM-DD).
+- **Calendar Dropdown**: Opens on input field click.
+- **Auto-Close**: Closes when a date is selected.
 
-### DatePicker API Properties
+### API Properties
 
-| Name     | Type               | Default | Description                        |
-|----------|--------------------|---------|------------------------------------|
-| defaultValue   | Date or string   | null    | The default selected date.       |
-| inputFormat     | string   | yyyy-MM-dd    | The input format.  <br/>`yyyy-MM-dd` = 2024-01-01<br/>`MM-dd-yyyy` = 01-01-2024<br/>`dd-MM-yyyy` = 01-01-2024       |
-| closeOnSelect     | boolean   | false    | Close the calendar after a date is selected.       |
-| firstDayOfWeek | number     | 0    | The first day of the week.<br/>0 = Sunday<br/>1 = Monday<br/>2 = Tuesday<br/>3 = Wednesday<br/>4 = Thursday<br/>5 = Friday<br/>6 = Saturday       |
-| onChange   | function(date) |         | A callback called when the input value changes. <br/> **Signature:**<br/> `function(value) => void`<br/>`value`: The input value.    |
-
-
+| Name            | Type             | Default     | Description                                      |
+|-----------------|------------------|-------------|--------------------------------------------------|
+| `defaultValue`  | Date or string   | null        | The default selected date.                       |
+| `inputFormat`   | string           | yyyy-MM-dd  | The input format (e.g., `yyyy-MM-dd`, `MM-dd-yyyy`, `dd-MM-yyyy`).           |
+| `closeOnSelect` | boolean          | false       | Close the calendar after a date is selected.     |
+| `firstDayOfWeek`| number           | 0           | First day of the week (0 = Sunday, 1 = Monday, etc.). |
+| `onChange`      | function(value)  |             | Callback when the input value changes.           |
 
 ## Usage
 
-To use these components, import them into your React application and include them in your JSX:
+Import and use these components in your React application:
 
 ```jsx
 import Calendar from './Calendar/Calendar';
@@ -89,4 +84,5 @@ export default App;
 ```
 
 ### UI Customization
-The components can be customized using Material-UI's theming capabilities. Adjust the theme in `App.jsx` to change colors, typography, and more.
+
+Customize using Material-UI's theming capabilities. Adjust the theme in `App.jsx` to change colors, typography, and more.
