@@ -65,53 +65,43 @@ const DatePicker = forwardRef((props: DatePickerProps, ref) => {
     (event: React.ChangeEvent<HTMLInputElement>) => {
       const value = event.target.value;
       setInputValue(value);
-      if (value === "") {
-        setDate(null);
-        setError(false);
-        return;
-      }
 
-      let dateFormatRegex;
-      let year, month, day;
+      const parseDate = (
+        value: string,
+        format: DatePickerInputFormat
+      ): Date | null => {
+        const parts = value.split("-");
+        if (parts.length !== 3) return null;
 
-      switch (inputFormat) {
-        case "yyyy-MM-dd":
-          dateFormatRegex = /^\d{4}-\d{1,2}-\d{1,2}$/;
-          if (dateFormatRegex.test(value)) {
-            [year, month, day] = value.split("-").map(Number);
-          }
-          break;
-        case "MM-dd-yyyy":
-          dateFormatRegex = /^\d{1,2}-\d{1,2}-\d{4}$/;
-          if (dateFormatRegex.test(value)) {
-            [month, day, year] = value.split("-").map(Number);
-          }
-          break;
-        case "dd-MM-yyyy":
-          dateFormatRegex = /^\d{1,2}-\d{1,2}-\d{4}$/;
-          if (dateFormatRegex.test(value)) {
-            [day, month, year] = value.split("-").map(Number);
-          }
-          break;
-        default:
-          setError(true);
-          return;
-      }
+        let year, month, day;
 
-      if (year !== undefined && month !== undefined && day !== undefined) {
+        switch (format) {
+          case "yyyy-MM-dd":
+            [year, month, day] = parts.map(Number);
+            break;
+          case "MM-dd-yyyy":
+            [month, day, year] = parts.map(Number);
+            break;
+          case "dd-MM-yyyy":
+            [day, month, year] = parts.map(Number);
+            break;
+          default:
+            return null;
+        }
+
         const parsedDate = new Date(year, month - 1, day);
-
-        if (
-          isValid(parsedDate) &&
+        return isValid(parsedDate) &&
           parsedDate.getFullYear() === year &&
           parsedDate.getMonth() === month - 1 &&
           parsedDate.getDate() === day
-        ) {
-          setDate(parsedDate);
-          setError(false);
-        } else {
-          setError(true);
-        }
+          ? parsedDate
+          : null;
+      };
+
+      const parsedDate = parseDate(value, inputFormat);
+      if (parsedDate) {
+        setDate(parsedDate);
+        setError(false);
       } else {
         setError(true);
       }

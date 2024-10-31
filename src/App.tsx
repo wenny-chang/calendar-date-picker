@@ -28,6 +28,7 @@ function App() {
           />
         </Stack>
         <DatePicker
+          inputFormat="MM-dd-yyyy"
           defaultValue={new Date()}
           firstDayOfWeek={3}
           closeOnSelect={true}
