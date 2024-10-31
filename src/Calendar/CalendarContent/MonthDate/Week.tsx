@@ -10,7 +10,7 @@ const Week = ({ startDateOfWeek }: { startDateOfWeek: Date }) => {
   );
 
   return (
-    <Grid container>
+    <Grid container data-testid="week">
       {days.map((date) => (
         <Grid key={date.getTime()} size="grow">
           <Day date={date} />

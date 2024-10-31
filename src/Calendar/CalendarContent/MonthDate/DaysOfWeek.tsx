@@ -15,7 +15,12 @@ const DaysOfWeek = () => {
     <Grid container>
       {orderedDays.map((day) => (
         <Grid key={day} size="grow">
-          <Typography variant="subtitle2" align="center" width={40}>
+          <Typography
+            variant="subtitle2"
+            align="center"
+            width={40}
+            data-testid="days-of-week"
+          >
             {day}
           </Typography>
         </Grid>
