@@ -34,7 +34,7 @@ const Calendar = forwardRef((props: CalendarProps, ref) => {
     firstDayOfWeek = 0, // Default to Sunday
     onDateSelect: onDateSelectProp, // Callback for date selection
   } = props;
-  console.log({ dateProp });
+
   const initialDate = useMemo(
     () => mapValueToDate(dateProp) ?? null,
     [dateProp]
@@ -108,6 +108,7 @@ const Calendar = forwardRef((props: CalendarProps, ref) => {
         border="1px solid #ccc"
         borderRadius={1}
         ref={ref}
+        data-testid="calendar"
       >
         <YearMonthPicker />
         <CalendarContent />
