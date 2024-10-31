@@ -21,6 +21,7 @@ function App() {
           firstDayOfWeek={3}
           closeOnSelect={true}
           inputFormat="MM-dd-yyyy"
+          onChange={(date) => console.log(date)}
         />
       </Box>
     </ThemeProvider>

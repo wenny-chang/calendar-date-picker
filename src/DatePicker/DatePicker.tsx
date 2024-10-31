@@ -17,6 +17,7 @@ type DatePickerProps = {
   defaultValue?: string;
   inputFormat?: DatePickerInputFormat;
   closeOnSelect?: boolean;
+  onChange?: (value: string) => void;
 };
 
 const DatePicker = forwardRef((props: DatePickerProps, ref) => {
@@ -25,6 +26,7 @@ const DatePicker = forwardRef((props: DatePickerProps, ref) => {
     defaultValue,
     inputFormat = "yyyy-MM-dd",
     closeOnSelect = false,
+    onChange,
   } = props;
 
   const [date, setDate] = useState<Date | null>(
@@ -135,11 +137,22 @@ const DatePicker = forwardRef((props: DatePickerProps, ref) => {
     [date, handleDateSelect]
   );
 
+  const handleInputOnChange = useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      const value = event.target.value;
+      if (onChange) {
+        onChange(value);
+      }
+      handleInputChange(event);
+    },
+    [date, onChange, handleInputChange]
+  );
+
   return (
     <Box sx={{ position: "relative", width: "fit-content" }} ref={ref}>
       <TextField
         value={inputValue}
-        onChange={handleInputChange}
+        onChange={handleInputOnChange}
         onFocus={handleInputFocus}
         onKeyDown={handleKeyDown}
         placeholder={inputFormat}
