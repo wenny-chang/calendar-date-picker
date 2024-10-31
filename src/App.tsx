@@ -15,7 +15,11 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <Box display="flex" gap={12}>
-        <Calendar />
+        <Calendar
+          defaultDate="2024-01-01"
+          firstDayOfWeek={3}
+          onDateSelect={(date) => console.log(date)}
+        />
         <DatePicker
           defaultValue="01-01-2024"
           firstDayOfWeek={3}
