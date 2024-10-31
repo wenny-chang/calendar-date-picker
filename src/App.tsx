@@ -24,23 +24,13 @@ function App() {
           <Typography>
             Selected Date: {selectedDate?.toLocaleDateString("zh-TW")}
           </Typography>
-          <Calendar
-            defaultDate=""
-            firstDayOfWeek={3}
-            onDateSelect={(date) => setSelectedDate(date)}
-          />
+          <Calendar onDateSelect={(date) => setSelectedDate(date)} />
         </Stack>
         <Stack>
           <Typography variant="h4" color="success" mb={2}>
             Date Picker
           </Typography>
-          <DatePicker
-            inputFormat="MM-dd-yyyy"
-            defaultValue={new Date()}
-            firstDayOfWeek={3}
-            closeOnSelect={true}
-            onChange={(date) => console.log(date)}
-          />
+          <DatePicker />
         </Stack>
       </Box>
     </ThemeProvider>

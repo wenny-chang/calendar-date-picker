@@ -66,6 +66,11 @@ const DatePicker = forwardRef((props: DatePickerProps, ref) => {
       const value = event.target.value;
       setInputValue(value);
 
+      if (value === "") {
+        setDate(null);
+        return;
+      }
+
       const parseDate = (
         value: string,
         format: DatePickerInputFormat
