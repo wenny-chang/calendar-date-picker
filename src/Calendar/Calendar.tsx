@@ -17,8 +17,8 @@ const mapValueToDate = (value: Date | string | number | undefined | null) => {
 };
 
 type CalendarProps = {
-  date?: Date | string | number | undefined | null;
-  defaultDate?: Date | string | number | undefined | null;
+  date?: Date | string | undefined | null;
+  defaultDate?: Date | string | undefined | null;
   firstDayOfWeek?: number;
   onDateSelect?: (date: Date) => void;
 };
@@ -30,7 +30,6 @@ const Calendar = forwardRef((props: CalendarProps, ref) => {
     firstDayOfWeek = 0, // Default to Sunday
     onDateSelect: onDateSelectProp, // Callback for date selection
   } = props;
-
   const initialDate = useMemo(
     () => mapValueToDate(dateProp) ?? mapValueToDate(defaultDateProp) ?? null,
     [dateProp, defaultDateProp]
@@ -111,7 +110,7 @@ const Calendar = forwardRef((props: CalendarProps, ref) => {
 Calendar.displayName = "Calendar";
 
 Calendar.propTypes = {
-  date: PropTypes.string,
+  date: PropTypes.oneOfType([PropTypes.string, PropTypes.instanceOf(Date)]),
   firstDayOfWeek: PropTypes.number,
   onDateSelect: PropTypes.func,
 };

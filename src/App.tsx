@@ -3,9 +3,11 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { grey } from "@mui/material/colors";
 import Calendar from "./Calendar/Calendar";
 import DatePicker from "./DatePicker";
-import { Box } from "@mui/material";
+import { Box, Stack, Typography } from "@mui/material";
+import { useState } from "react";
 
 function App() {
+  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const theme = createTheme({
     palette: {
       secondary: grey,
@@ -15,16 +17,20 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <Box display="flex" gap={12}>
-        <Calendar
-          defaultDate="2024-01-01"
-          firstDayOfWeek={3}
-          onDateSelect={(date) => console.log(date)}
-        />
+        <Stack>
+          <Typography>
+            Selected Date: {selectedDate?.toLocaleDateString("zh-TW")}
+          </Typography>
+          <Calendar
+            defaultDate=""
+            firstDayOfWeek={3}
+            onDateSelect={(date) => setSelectedDate(date)}
+          />
+        </Stack>
         <DatePicker
-          defaultValue="01-01-2024"
+          defaultValue={new Date()}
           firstDayOfWeek={3}
           closeOnSelect={true}
-          inputFormat="MM-dd-yyyy"
           onChange={(date) => console.log(date)}
         />
       </Box>

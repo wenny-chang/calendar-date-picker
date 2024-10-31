@@ -14,7 +14,7 @@ type DatePickerInputFormat = "yyyy-MM-dd" | "MM-dd-yyyy" | "dd-MM-yyyy";
 
 type DatePickerProps = {
   firstDayOfWeek?: number;
-  defaultValue?: string;
+  defaultValue?: string | Date;
   inputFormat?: DatePickerInputFormat;
   closeOnSelect?: boolean;
   onChange?: (value: string) => void;
@@ -23,11 +23,16 @@ type DatePickerProps = {
 const DatePicker = forwardRef((props: DatePickerProps, ref) => {
   const {
     firstDayOfWeek,
-    defaultValue,
+    defaultValue: defaultValueProp,
     inputFormat = "yyyy-MM-dd",
     closeOnSelect = false,
     onChange,
   } = props;
+
+  const defaultValue =
+    defaultValueProp instanceof Date
+      ? format(defaultValueProp, inputFormat)
+      : defaultValueProp;
 
   const [date, setDate] = useState<Date | null>(
     defaultValue ? new Date(defaultValue) : null
