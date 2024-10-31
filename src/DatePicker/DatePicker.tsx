@@ -10,6 +10,7 @@ const DatePicker: React.FC = () => {
   const [inputValue, setInputValue] = useState<string>("");
   const calendarRef = useRef<HTMLDivElement | null>(null);
   const inputRef = useRef<HTMLInputElement | null>(null);
+  const [error, setError] = useState<boolean>(false);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -34,9 +35,21 @@ const DatePicker: React.FC = () => {
       const value = event.target.value;
       setInputValue(value);
 
-      const parsedDate = new Date(value);
-      if (isValid(parsedDate)) {
-        setDate(parsedDate);
+      const dateFormatRegex = /^\d{4}-\d{2}-\d{2}$/;
+      const isValidDate = dateFormatRegex.test(value);
+      setError(!isValidDate);
+      if (isValidDate) {
+        const [year, month, day] = value.split("-").map(Number);
+        const parsedDate = new Date(year, month - 1, day);
+
+        if (
+          isValid(parsedDate) &&
+          parsedDate.getFullYear() === year &&
+          parsedDate.getMonth() === month - 1 &&
+          parsedDate.getDate() === day
+        ) {
+          setDate(parsedDate);
+        }
       }
     },
     []
@@ -49,8 +62,17 @@ const DatePicker: React.FC = () => {
   const handleDateSelect = useCallback((selectedDate: Date) => {
     setDate(selectedDate);
     setInputValue(format(selectedDate, "yyyy-MM-dd"));
-    setShowCalendar(false);
   }, []);
+
+  const handleKeyDown = useCallback(
+    (event: React.KeyboardEvent<HTMLInputElement>) => {
+      if (event.key === "Enter" && date) {
+        handleDateSelect(date);
+        setShowCalendar(false);
+      }
+    },
+    [date, handleDateSelect]
+  );
 
   return (
     <Box sx={{ position: "relative", width: "fit-content" }}>
@@ -58,8 +80,11 @@ const DatePicker: React.FC = () => {
         value={inputValue}
         onChange={handleInputChange}
         onFocus={handleInputFocus}
+        onKeyDown={handleKeyDown}
         placeholder="YYYY-MM-DD"
+        helperText={error ? "Invalid format" : ""}
         inputRef={inputRef}
+        error={error}
         slotProps={{
           input: {
             startAdornment: (

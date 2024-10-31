@@ -34,7 +34,7 @@ const Calendar = forwardRef((props: CalendarProps, ref) => {
     firstDayOfWeek = 0, // Default to Sunday
     onDateSelect: onDateSelectProp, // Callback for date selection
   } = props;
-
+  console.log({ dateProp });
   const initialDate = useMemo(
     () => mapValueToDate(dateProp) ?? null,
     [dateProp]
@@ -69,6 +69,10 @@ const Calendar = forwardRef((props: CalendarProps, ref) => {
     },
     [currentContentView, dateProp, onDateSelectProp]
   );
+
+  useEffect(() => {
+    setDate(initialDate);
+  }, [dateProp]);
 
   useEffect(() => {
     date && setActiveDate(date);
