@@ -16,8 +16,11 @@ function App() {
 
   return (
     <ThemeProvider theme={theme}>
-      <Box display="flex" gap={12}>
+      <Box display="flex" gap={12} width="100%" justifyContent="center">
         <Stack>
+          <Typography variant="h4" color="success" mb={2}>
+            Calendar
+          </Typography>
           <Typography>
             Selected Date: {selectedDate?.toLocaleDateString("zh-TW")}
           </Typography>
@@ -27,13 +30,18 @@ function App() {
             onDateSelect={(date) => setSelectedDate(date)}
           />
         </Stack>
-        <DatePicker
-          inputFormat="MM-dd-yyyy"
-          defaultValue={new Date()}
-          firstDayOfWeek={3}
-          closeOnSelect={true}
-          onChange={(date) => console.log(date)}
-        />
+        <Stack>
+          <Typography variant="h4" color="success" mb={2}>
+            Date Picker
+          </Typography>
+          <DatePicker
+            inputFormat="MM-dd-yyyy"
+            defaultValue={new Date()}
+            firstDayOfWeek={3}
+            closeOnSelect={true}
+            onChange={(date) => console.log(date)}
+          />
+        </Stack>
       </Box>
     </ThemeProvider>
   );
