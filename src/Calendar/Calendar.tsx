@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import { useState, useMemo, useCallback, forwardRef } from "react";
+import { useState, useMemo, useCallback, forwardRef, useEffect } from "react";
 import { Box } from "@mui/material";
 import { CalendarProvider } from "./context";
 import { format, isDate, isValid } from "date-fns";
@@ -69,6 +69,10 @@ const Calendar = forwardRef((props: CalendarProps, ref) => {
     },
     [currentContentView, dateProp, onDateSelectProp]
   );
+
+  useEffect(() => {
+    date && setActiveDate(date);
+  }, [date]);
 
   const context: CalendarContextType = useMemo(
     () => ({
