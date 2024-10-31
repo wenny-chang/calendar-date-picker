@@ -35,9 +35,10 @@ const DatePicker: React.FC = () => {
       const value = event.target.value;
       setInputValue(value);
 
-      const dateFormatRegex = /^\d{4}-\d{2}-\d{2}$/;
+      const dateFormatRegex = /^\d{4}-\d{1,2}-\d{1,2}$/;
       const isValidDate = dateFormatRegex.test(value);
       setError(!isValidDate);
+
       if (isValidDate) {
         const [year, month, day] = value.split("-").map(Number);
         const parsedDate = new Date(year, month - 1, day);
@@ -49,6 +50,8 @@ const DatePicker: React.FC = () => {
           parsedDate.getDate() === day
         ) {
           setDate(parsedDate);
+        } else {
+          setError(true);
         }
       }
     },
