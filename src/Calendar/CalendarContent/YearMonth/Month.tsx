@@ -4,25 +4,7 @@ import { forwardRef, useCallback } from "react";
 import useCalendar from "../../useCalendar";
 import { isSameMonth } from "date-fns";
 import { CalendarContentView } from "../../../utils/constant";
-
-const style = {
-  width: 60,
-  height: 60,
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-  borderRadius: "50%",
-  cursor: "pointer",
-};
-
-const isCurrentMonthStyle = {
-  color: "#db3d44",
-};
-
-const isSelectedStyle = {
-  backgroundColor: "#db3d44",
-  color: "white",
-};
+import useCalendarStyle from "../../useCalenderStyle";
 
 const Month = forwardRef(({ date, ...rest }: { date: Date }, ref) => {
   const {
@@ -41,19 +23,10 @@ const Month = forwardRef(({ date, ...rest }: { date: Date }, ref) => {
 
   const isCurrentMonth = isSameMonth(date, new Date());
   const isSelected = isSameMonth(date, selectedDate ?? "");
+  const monthStyle = useCalendarStyle(isCurrentMonth, isSelected, false);
 
   return (
-    <Box
-      ref={ref}
-      sx={{
-        ...style,
-        ...(isCurrentMonth && isCurrentMonthStyle),
-        ...(isSelected && isSelectedStyle),
-        "&:hover": { backgroundColor: "#db3d44", color: "white" },
-      }}
-      onClick={handleClick}
-      {...rest}
-    >
+    <Box ref={ref} sx={monthStyle} onClick={handleClick} {...rest}>
       {formatDate(date, "MMM")}
     </Box>
   );

@@ -5,29 +5,7 @@ import useCalendar from "../../useCalendar";
 import { isSameYear } from "date-fns";
 import { CalendarContentView } from "../../../utils/constant";
 import { getDecadeRange } from "../../../utils/function";
-
-const style = {
-  width: 60,
-  height: 60,
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-  borderRadius: "50%",
-  cursor: "pointer",
-};
-
-const isCurrentYearStyle = {
-  color: "#db3d44",
-};
-
-const isSelectedStyle = {
-  backgroundColor: "#db3d44",
-  color: "white",
-};
-
-const isNotInDecadeStyle = {
-  color: "#eeeeee",
-};
+import useCalendarStyle from "../../useCalenderStyle";
 
 const Year = forwardRef(({ year, ...rest }: { year: number }, ref) => {
   const {
@@ -49,19 +27,10 @@ const Year = forwardRef(({ year, ...rest }: { year: number }, ref) => {
   const decadeRange = getDecadeRange(activeDate);
   const isNotInDecade = year < decadeRange[0] || year > decadeRange[1];
 
+  const yearStyle = useCalendarStyle(isCurrentYear, isSelected, isNotInDecade);
+
   return (
-    <Box
-      ref={ref}
-      sx={{
-        ...style,
-        ...(isCurrentYear && isCurrentYearStyle),
-        ...(isSelected && isSelectedStyle),
-        ...(isNotInDecade && isNotInDecadeStyle),
-        "&:hover": { backgroundColor: "#db3d44", color: "white" },
-      }}
-      onClick={handleClick}
-      {...rest}
-    >
+    <Box ref={ref} sx={yearStyle} onClick={handleClick} {...rest}>
       {year}
     </Box>
   );

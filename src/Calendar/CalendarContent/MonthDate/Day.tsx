@@ -1,19 +1,9 @@
 import { Box } from "@mui/material";
 import PropTypes from "prop-types";
-import { forwardRef, useCallback, useMemo } from "react";
+import { forwardRef, useCallback } from "react";
 import useCalendar from "../../useCalendar";
 import { isSameDay, isSameMonth } from "date-fns";
-
-const baseStyle = {
-  width: 36,
-  height: 36,
-  margin: "2px",
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-  borderRadius: "50%",
-  cursor: "pointer",
-};
+import useCalendarStyle from "../../useCalenderStyle";
 
 const Day = forwardRef(({ date, ...rest }: { date: Date }, ref) => {
   const {
@@ -37,19 +27,16 @@ const Day = forwardRef(({ date, ...rest }: { date: Date }, ref) => {
   const isSelected = isSameDay(date, selectedDate ?? "");
   const isNotSameMonth = !isSameMonth(date, activeDate);
 
-  const dayStyle = useMemo(
-    () => ({
-      ...baseStyle,
-      ...(isToday && { color: "#db3d44" }),
-      ...(isSelected && { backgroundColor: "#db3d44", color: "white" }),
-      ...(isNotSameMonth && { color: "#eeeeee" }),
-      "&:hover": { backgroundColor: "#db3d44", color: "white" },
-    }),
-    [isToday, isSelected, isNotSameMonth]
-  );
+  const dayStyle = useCalendarStyle(isToday, isSelected, isNotSameMonth);
 
   return (
-    <Box ref={ref} sx={dayStyle} onClick={handleClick} {...rest}>
+    <Box
+      ref={ref}
+      sx={dayStyle}
+      onClick={handleClick}
+      {...rest}
+      data-testid="day"
+    >
       {formatDate(date, "d")}
     </Box>
   );
