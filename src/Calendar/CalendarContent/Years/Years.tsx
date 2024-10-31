@@ -13,7 +13,7 @@ const Years = () => {
   );
 
   return (
-    <Grid container>
+    <Grid container data-testid="years">
       {allYearsInDecade.map((year) => (
         <Grid key={year} size={3}>
           <Year year={year} />

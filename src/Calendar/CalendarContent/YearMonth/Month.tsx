@@ -26,7 +26,13 @@ const Month = forwardRef(({ date, ...rest }: { date: Date }, ref) => {
   const monthStyle = useCalendarStyle(isCurrentMonth, isSelected, false);
 
   return (
-    <Box ref={ref} sx={monthStyle} onClick={handleClick} {...rest}>
+    <Box
+      ref={ref}
+      sx={monthStyle}
+      onClick={handleClick}
+      data-testid="month"
+      {...rest}
+    >
       {formatDate(date, "MMM")}
     </Box>
   );

@@ -30,7 +30,13 @@ const Year = forwardRef(({ year, ...rest }: { year: number }, ref) => {
   const yearStyle = useCalendarStyle(isCurrentYear, isSelected, isNotInDecade);
 
   return (
-    <Box ref={ref} sx={yearStyle} onClick={handleClick} {...rest}>
+    <Box
+      ref={ref}
+      sx={yearStyle}
+      onClick={handleClick}
+      {...rest}
+      data-testid="year"
+    >
       {year}
     </Box>
   );

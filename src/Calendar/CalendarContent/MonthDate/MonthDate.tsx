@@ -5,7 +5,7 @@ import Weeks from "./Weeks";
 
 const MonthDate = forwardRef((props, ref) => {
   return (
-    <Box ref={ref} {...props}>
+    <Box ref={ref} {...props} data-testid="month-date">
       <DaysOfWeek />
       <Weeks />
     </Box>
