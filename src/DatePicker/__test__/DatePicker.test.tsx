@@ -5,20 +5,20 @@ import DatePicker from "../DatePicker";
 describe("DatePicker", () => {
   it("renders input field with calendar icon", () => {
     render(<DatePicker />);
-    expect(screen.getByPlaceholderText("YYYY-MM-DD")).toBeInTheDocument();
+    expect(screen.getByPlaceholderText("yyyy-MM-dd")).toBeInTheDocument();
     expect(screen.getByTestId("CalendarMonthIcon")).toBeInTheDocument();
   });
 
   it("shows calendar on input focus", () => {
     render(<DatePicker />);
-    const input = screen.getByPlaceholderText("YYYY-MM-DD");
+    const input = screen.getByPlaceholderText("yyyy-MM-dd");
     fireEvent.focus(input);
     expect(screen.getByTestId("prev-button")).toBeInTheDocument();
   });
 
   it("hides calendar when clicking outside", () => {
     render(<DatePicker />);
-    const input = screen.getByPlaceholderText("YYYY-MM-DD");
+    const input = screen.getByPlaceholderText("yyyy-MM-dd");
 
     // Show calendar
     fireEvent.focus(input);
@@ -31,7 +31,7 @@ describe("DatePicker", () => {
 
   it("validates date input format", async () => {
     render(<DatePicker />);
-    const input = screen.getByPlaceholderText("YYYY-MM-DD");
+    const input = screen.getByPlaceholderText("yyyy-MM-dd");
 
     // Invalid format
     await userEvent.type(input, "2023-13-45");
@@ -45,7 +45,7 @@ describe("DatePicker", () => {
 
   it("updates input value when date is selected from calendar", () => {
     render(<DatePicker />);
-    const input = screen.getByPlaceholderText("YYYY-MM-DD");
+    const input = screen.getByPlaceholderText("yyyy-MM-dd");
 
     // Open calendar
     fireEvent.focus(input);
@@ -65,7 +65,7 @@ describe("DatePicker", () => {
 
   it("handles Enter key press", async () => {
     render(<DatePicker />);
-    const input = screen.getByPlaceholderText("YYYY-MM-DD");
+    const input = screen.getByPlaceholderText("yyyy-MM-dd");
 
     // Enter valid date
     await userEvent.type(input, "2023-12-25");
@@ -78,21 +78,21 @@ describe("DatePicker", () => {
   describe("error state", () => {
     it("should be error when date is invalid", async () => {
       render(<DatePicker />);
-      const input = screen.getByPlaceholderText("YYYY-MM-DD");
+      const input = screen.getByPlaceholderText("yyyy-MM-dd");
       await userEvent.type(input, "2023-13-45");
       expect(screen.getByText("Invalid format")).toBeInTheDocument();
     });
 
     it("should be error when date is invalid", async () => {
       render(<DatePicker />);
-      const input = screen.getByPlaceholderText("YYYY-MM-DD");
+      const input = screen.getByPlaceholderText("yyyy-MM-dd");
       await userEvent.type(input, "2023-1");
       expect(screen.getByText("Invalid format")).toBeInTheDocument();
     });
 
     it("should be pass when date of month and day is one number", async () => {
       render(<DatePicker />);
-      const input = screen.getByPlaceholderText("YYYY-MM-DD");
+      const input = screen.getByPlaceholderText("yyyy-MM-dd");
       await userEvent.type(input, "2023-1-1");
       expect(screen.queryByText("Invalid format")).not.toBeInTheDocument();
     });
