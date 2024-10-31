@@ -1,0 +1,20 @@
+diff --git a/node_modules/nwsapi/src/nwsapi.js b/node_modules/nwsapi/src/nwsapi.js
+index 1974ec2..c660b7d 100644
+--- a/node_modules/nwsapi/src/nwsapi.js
++++ b/node_modules/nwsapi/src/nwsapi.js
+@@ -1085,11 +1085,13 @@
+               switch (match[1]) {
+                 case 'hover':
+                   source = 'hasFocus' in doc && doc.hasFocus() ?
+-                    'if((e===s.doc.hoverElement)){' + source + '}' : source;
++                    'if((e===s.doc.hoverElement)){' + source + '}' :
++                    'if(false){' + source + '}';
+                   break;
+                 case 'active':
+                   source = 'hasFocus' in doc && doc.hasFocus() ?
+-                    'if((e===s.doc.activeElement)){' + source + '}' : source;
++                    'if((e===s.doc.activeElement)){' + source + '}' :
++                    'if(false){' + source + '}';
+                   break;
+                 case 'focus':
+                   source = 'hasFocus'in doc ?
