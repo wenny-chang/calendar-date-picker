@@ -2,7 +2,6 @@ import { useMemo } from "react";
 import { startOfMonth, startOfWeek, addWeeks, Day } from "date-fns";
 import Week from "./Week";
 import useCalendar from "../../useCalendar";
-import Grid from "@mui/material/Grid2";
 
 const Weeks = () => {
   const { activeDate, firstDayOfWeek } = useCalendar();
@@ -19,9 +18,7 @@ const Weeks = () => {
   return (
     <>
       {weeks.map((startDateOfWeek, index) => (
-        <Grid container key={index}>
-          <Week startDateOfWeek={startDateOfWeek} />
-        </Grid>
+        <Week startDateOfWeek={startDateOfWeek} key={index} />
       ))}
     </>
   );

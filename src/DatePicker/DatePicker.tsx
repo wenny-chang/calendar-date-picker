@@ -1,13 +1,37 @@
-import React, { useState, useRef, useEffect, useCallback } from "react";
+import React, {
+  useState,
+  useRef,
+  useEffect,
+  useCallback,
+  forwardRef,
+} from "react";
 import { Box, TextField, InputAdornment } from "@mui/material";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import Calendar from "../Calendar/Calendar";
 import { format, isValid } from "date-fns";
 
-const DatePicker: React.FC = () => {
-  const [date, setDate] = useState<Date | null>(null);
+type DatePickerInputFormat = "yyyy-MM-dd" | "MM-dd-yyyy" | "dd-MM-yyyy";
+
+type DatePickerProps = {
+  firstDayOfWeek?: number;
+  defaultValue?: string;
+  inputFormat?: DatePickerInputFormat;
+  closeOnSelect?: boolean;
+};
+
+const DatePicker = forwardRef((props: DatePickerProps, ref) => {
+  const {
+    firstDayOfWeek,
+    defaultValue,
+    inputFormat = "yyyy-MM-dd",
+    closeOnSelect = false,
+  } = props;
+
+  const [date, setDate] = useState<Date | null>(
+    defaultValue ? new Date(defaultValue) : null
+  );
   const [showCalendar, setShowCalendar] = useState<boolean>(false);
-  const [inputValue, setInputValue] = useState<string>("");
+  const [inputValue, setInputValue] = useState<string>(defaultValue || "");
   const calendarRef = useRef<HTMLDivElement | null>(null);
   const inputRef = useRef<HTMLInputElement | null>(null);
   const [error, setError] = useState<boolean>(false);
@@ -34,13 +58,40 @@ const DatePicker: React.FC = () => {
     (event: React.ChangeEvent<HTMLInputElement>) => {
       const value = event.target.value;
       setInputValue(value);
+      if (value === "") {
+        setDate(null);
+        setError(false);
+        return;
+      }
 
-      const dateFormatRegex = /^\d{4}-\d{1,2}-\d{1,2}$/;
-      const isValidDate = dateFormatRegex.test(value);
-      setError(!isValidDate);
+      let dateFormatRegex;
+      let year, month, day;
 
-      if (isValidDate) {
-        const [year, month, day] = value.split("-").map(Number);
+      switch (inputFormat) {
+        case "yyyy-MM-dd":
+          dateFormatRegex = /^\d{4}-\d{1,2}-\d{1,2}$/;
+          if (dateFormatRegex.test(value)) {
+            [year, month, day] = value.split("-").map(Number);
+          }
+          break;
+        case "MM-dd-yyyy":
+          dateFormatRegex = /^\d{1,2}-\d{1,2}-\d{4}$/;
+          if (dateFormatRegex.test(value)) {
+            [month, day, year] = value.split("-").map(Number);
+          }
+          break;
+        case "dd-MM-yyyy":
+          dateFormatRegex = /^\d{1,2}-\d{1,2}-\d{4}$/;
+          if (dateFormatRegex.test(value)) {
+            [day, month, year] = value.split("-").map(Number);
+          }
+          break;
+        default:
+          setError(true);
+          return;
+      }
+
+      if (year !== undefined && month !== undefined && day !== undefined) {
         const parsedDate = new Date(year, month - 1, day);
 
         if (
@@ -50,22 +101,29 @@ const DatePicker: React.FC = () => {
           parsedDate.getDate() === day
         ) {
           setDate(parsedDate);
+          setError(false);
         } else {
           setError(true);
         }
+      } else {
+        setError(true);
       }
     },
-    []
+    [inputFormat]
   );
 
   const handleInputFocus = useCallback(() => {
     setShowCalendar(true);
   }, []);
 
-  const handleDateSelect = useCallback((selectedDate: Date) => {
-    setDate(selectedDate);
-    setInputValue(format(selectedDate, "yyyy-MM-dd"));
-  }, []);
+  const handleDateSelect = useCallback(
+    (selectedDate: Date) => {
+      setDate(selectedDate);
+      setInputValue(format(selectedDate, inputFormat));
+      setShowCalendar(!closeOnSelect);
+    },
+    [closeOnSelect]
+  );
 
   const handleKeyDown = useCallback(
     (event: React.KeyboardEvent<HTMLInputElement>) => {
@@ -78,13 +136,13 @@ const DatePicker: React.FC = () => {
   );
 
   return (
-    <Box sx={{ position: "relative", width: "fit-content" }}>
+    <Box sx={{ position: "relative", width: "fit-content" }} ref={ref}>
       <TextField
         value={inputValue}
         onChange={handleInputChange}
         onFocus={handleInputFocus}
         onKeyDown={handleKeyDown}
-        placeholder="YYYY-MM-DD"
+        placeholder={inputFormat}
         helperText={error ? "Invalid format" : ""}
         inputRef={inputRef}
         error={error}
@@ -112,11 +170,15 @@ const DatePicker: React.FC = () => {
             marginTop: "8px",
           }}
         >
-          <Calendar date={date} onDateSelect={handleDateSelect} />
+          <Calendar
+            date={date}
+            onDateSelect={handleDateSelect}
+            firstDayOfWeek={firstDayOfWeek}
+          />
         </Box>
       )}
     </Box>
   );
-};
+});
 
 export default React.memo(DatePicker);

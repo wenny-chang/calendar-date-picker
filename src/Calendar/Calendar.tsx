@@ -18,11 +18,6 @@ const mapValueToDate = (value: Date | string | number | undefined | null) => {
 
 type CalendarProps = {
   date?: Date | string | number | undefined | null;
-  formatDate?: (
-    date: Date,
-    format: string,
-    options?: Intl.DateTimeFormatOptions
-  ) => string;
   firstDayOfWeek?: number;
   onDateSelect?: (date: Date) => void;
 };
@@ -30,7 +25,6 @@ type CalendarProps = {
 const Calendar = forwardRef((props: CalendarProps, ref) => {
   const {
     date: dateProp, // Controlled date prop
-    formatDate: formatDateProp, // Custom date formatting function
     firstDayOfWeek = 0, // Default to Sunday
     onDateSelect: onDateSelectProp, // Callback for date selection
   } = props;
@@ -46,15 +40,10 @@ const Calendar = forwardRef((props: CalendarProps, ref) => {
     CalendarContentView.DAY
   );
 
-  const formatDate = useCallback(
-    (_date: Date, _format: string) => {
-      if (!_date) return "";
-      return typeof formatDateProp === "function"
-        ? formatDateProp(_date, _format)
-        : format(_date, _format);
-    },
-    [formatDateProp]
-  );
+  const formatDate = useCallback((_date: Date, _format: string) => {
+    if (!_date) return "";
+    return format(_date, _format);
+  }, []);
 
   const onDateSelect = useCallback(
     ({ year, month, day }: { year: number; month: number; day: number }) => {
@@ -121,7 +110,6 @@ Calendar.displayName = "Calendar";
 
 Calendar.propTypes = {
   date: PropTypes.instanceOf(Date),
-  formatDate: PropTypes.func,
   firstDayOfWeek: PropTypes.number,
   onDateSelect: PropTypes.func,
 };

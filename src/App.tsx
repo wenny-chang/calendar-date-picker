@@ -16,7 +16,12 @@ function App() {
     <ThemeProvider theme={theme}>
       <Box display="flex" gap={12}>
         <Calendar />
-        <DatePicker />
+        <DatePicker
+          defaultValue="01-01-2024"
+          firstDayOfWeek={3}
+          closeOnSelect={true}
+          inputFormat="MM-dd-yyyy"
+        />
       </Box>
     </ThemeProvider>
   );
