@@ -1,13 +1,13 @@
 import { forwardRef } from "react";
 import { Box, IconButton, Button } from "@mui/material";
-import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
-import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
 import useCalendar from "../useCalendar";
 import {
   NextCalendarContentView,
   CalendarContentView,
 } from "../../utils/constant";
 import { getDecadeRange } from "../../utils/function";
+import NextIcon from "../../assets/next-arrow.svg";
+import PrevIcon from "../../assets/prev-arrow.svg";
 
 const YearMonthPicker = forwardRef((_props, ref) => {
   const {
@@ -71,7 +71,7 @@ const YearMonthPicker = forwardRef((_props, ref) => {
       mb={1}
     >
       <IconButton onClick={handlePrev} size="small" data-testid="prev-button">
-        <ArrowBackIosNewIcon fontSize="small" />
+        <img src={PrevIcon} alt="prev-icon" width={16} height={16} />
       </IconButton>
       <Button
         fullWidth
@@ -90,7 +90,7 @@ const YearMonthPicker = forwardRef((_props, ref) => {
           : getDecadeRange(activeDate).join(" - ")}
       </Button>
       <IconButton onClick={handleNext} size="small" data-testid="next-button">
-        <ArrowForwardIosIcon fontSize="small" />
+        <img src={NextIcon} alt="next-icon" width={16} height={16} />
       </IconButton>
     </Box>
   );

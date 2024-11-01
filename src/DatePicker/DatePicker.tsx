@@ -6,9 +6,9 @@ import React, {
   forwardRef,
 } from "react";
 import { Box, TextField, InputAdornment } from "@mui/material";
-import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import Calendar from "../Calendar/Calendar";
 import { format, isValid } from "date-fns";
+import CalendarIcon from "../assets/calendar.svg";
 
 type DatePickerInputFormat = "yyyy-MM-dd" | "MM-dd-yyyy" | "dd-MM-yyyy";
 
@@ -163,7 +163,12 @@ const DatePicker = forwardRef((props: DatePickerProps, ref) => {
           input: {
             startAdornment: (
               <InputAdornment position="start">
-                <CalendarMonthIcon />
+                <img
+                  src={CalendarIcon}
+                  alt="calendar-icon"
+                  width={20}
+                  height={20}
+                />
               </InputAdornment>
             ),
           },
