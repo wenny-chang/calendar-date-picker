@@ -17,5 +17,6 @@ export default {
       },
     ],
     "^.+\\.(js|jsx)$": "babel-jest",
+    "\\.svg$": "./fileTransformer.js",
   },
 };

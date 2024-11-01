@@ -6,7 +6,7 @@ describe("DatePicker", () => {
   it("renders input field with calendar icon", () => {
     render(<DatePicker />);
     expect(screen.getByPlaceholderText("yyyy-MM-dd")).toBeInTheDocument();
-    expect(screen.getByTestId("CalendarMonthIcon")).toBeInTheDocument();
+    expect(screen.getByTestId("calendar-icon")).toBeInTheDocument();
   });
 
   it("shows calendar on input focus", () => {
@@ -57,8 +57,13 @@ describe("DatePicker", () => {
     ).padStart(2, "0")}-${String(today.getDate()).padStart(2, "0")}`;
 
     // Find and click today's date button
-    const dateButton = screen.getByText(String(today.getDate()));
-    fireEvent.click(dateButton);
+    // if there are multiple date buttons, and the date is 26-31 then click the last one, else click the first one
+    const dateButton = screen.getAllByText(String(today.getDate()));
+    if (today.getDate() >= 26) {
+      fireEvent.click(dateButton[1]);
+    } else {
+      fireEvent.click(dateButton[0]);
+    }
 
     expect(input).toHaveValue(formattedDate);
   });

@@ -168,6 +168,7 @@ const DatePicker = forwardRef((props: DatePickerProps, ref) => {
                   alt="calendar-icon"
                   width={20}
                   height={20}
+                  data-testid="calendar-icon"
                 />
               </InputAdornment>
             ),
